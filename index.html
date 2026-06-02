@@ -94,7 +94,7 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 <input id="medicineSupplierSearch" placeholder="Search Supplier..." oninput="searchMedicineSupplier()">
 <div id="medicineSupplierResults" class="search-results"></div>
 <div id="selectedMedicineSupplierBox" class="list">No supplier selected</div>
-<h2 style="margin-top:20px">Add Medicine</h2>
+<h2>Add Medicine</h2>
 
 
 <div class="tabs">
@@ -272,31 +272,19 @@ el.classList.add('active');
 
 
 function searchMedicineSupplier(){
- let q=document.getElementById('medicineSupplierSearch').value.toLowerCase().trim();
- let box=document.getElementById('medicineSupplierResults');
+ const q=(document.getElementById('medicineSupplierSearch').value||'').toLowerCase();
+ const box=document.getElementById('medicineSupplierResults');
  box.innerHTML='';
- if(!q) return;
-
  suppliers.filter(s=>s.name.toLowerCase().includes(q)).forEach(s=>{
-   let div=document.createElement('div');
-   div.className='item';
-   div.innerText=s.name;
-   div.onclick=function(){ pickMedicineSupplier(s.name); };
-   box.appendChild(div);
+   box.innerHTML += `<div class='item' onclick='pickMedicineSupplier("${s.name}")'>${s.name}</div>`;
  });
 }
-
 function pickMedicineSupplier(name){
- let s=suppliers.find(x=>x.name===name);
+ const s=suppliers.find(x=>x.name===name);
  document.getElementById('selectedMedicineSupplierBox').innerHTML =
- '<b>✓ '+name+'</b><br>Discount '+(s?s.discount:0)+'%<br><button onclick="clearMedicineSupplier()" style="width:auto;margin-top:8px">Change</button>';
-
+ `<b>${name}</b><br>Discount ${s?s.discount:0}%`;
  document.getElementById('medicineSupplierSearch').value='';
  document.getElementById('medicineSupplierResults').innerHTML='';
-}
-
-function clearMedicineSupplier(){
- document.getElementById('selectedMedicineSupplierBox').innerHTML='No supplier selected';
 }
 
 renderPriceFields();
