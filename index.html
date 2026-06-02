@@ -90,9 +90,6 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 
 <div class="panel">
 <h2>Add Medicine</h2>
-<select id="medicineSupplier">
-<option value="">Select Supplier</option>
-</select>
 
 <div class="tabs">
 <div class="tab active" onclick="selectType(this,'Kashaya')">Kashaya</div>
@@ -100,10 +97,9 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 <div class="tab" onclick="selectType(this,'Kalka')">Kalka</div>
 <div class="tab" onclick="selectType(this,'Churna')">Churna</div>
 <div class="tab" onclick="selectType(this,'Oils')">Oils</div>
-<div class="tab" onclick="selectType(this,'Avasa/Arishta/Peni')">Avasa/Arishta/Peni</div>
 </div>
 
-<input id="medEnglish" placeholder="English Name"><input id="medName" placeholder="Medicine Name">
+<input id="medName" placeholder="Medicine Name">
 <div id="priceFields"></div>
 
 <button onclick="saveMedicine()">Save Medicine</button>
@@ -133,7 +129,6 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 <div class="tab" onclick="switchCategory(this,'Kalka')">Kalka</div>
 <div class="tab" onclick="switchCategory(this,'Churna')">Churna</div>
 <div class="tab" onclick="switchCategory(this,'Oils')">Oils</div>
-<div class="tab" onclick="switchCategory(this,'Avasa/Arishta/Peni')">Avasa/Arishta/Peni</div>
 </div>
 
 <input id="medicineSearch" placeholder="Search Medicine..." oninput="searchMedicine()">
@@ -214,22 +209,12 @@ discount:Number(supDiscount.value||0)
 });
 
 persist();
-renderSuppliers();populateMedicineSupplier();
+renderSuppliers();
 
 supName.value='';
 supRep.value='';
 supPhone.value='';
 supDiscount.value='';
-}
-
-
-function populateMedicineSupplier(){
-const dd=document.getElementById('medicineSupplier');
-if(!dd) return;
-dd.innerHTML='<option value="">Select Supplier</option>';
-suppliers.forEach(s=>{
-dd.innerHTML += `<option value="${s.name}">${s.name}</option>`;
-});
 }
 
 function renderSuppliers(){
@@ -262,14 +247,14 @@ supDiscount.value=s.discount;
 suppliers.splice(index,1);
 
 persist();
-renderSuppliers();populateMedicineSupplier();
+renderSuppliers();
 }
 
 function deleteSupplier(index){
 if(confirm('Delete Supplier?')){
 suppliers.splice(index,1);
 persist();
-renderSuppliers();populateMedicineSupplier();
+renderSuppliers();
 }
 }
 
@@ -278,6 +263,23 @@ medicineType=type;
 
 document.querySelectorAll('#medicines .tab').forEach(t=>t.classList.remove('active'));
 el.classList.add('active');
+
+
+function searchMedicineSupplier(){
+ const q=document.getElementById('medicineSupplierSearch').value.toLowerCase();
+ const res=document.getElementById('medicineSupplierResults');
+ res.innerHTML='';
+ suppliers.filter(s=>s.name.toLowerCase().includes(q)).forEach(s=>{
+   res.innerHTML += `<div class='item' onclick="pickMedicineSupplier('${s.name}')">${s.name}</div>`;
+ });
+}
+function pickMedicineSupplier(name){
+ const s=suppliers.find(x=>x.name===name);
+ document.getElementById('medicineSupplier').value=name;
+ document.getElementById('selectedMedicineSupplierBox').innerHTML=`<b>✓ ${name}</b><br>Discount: ${s?.discount||0}%`;
+ document.getElementById('medicineSupplierSearch').value='';
+ document.getElementById('medicineSupplierResults').innerHTML='';
+}
 
 renderPriceFields();
 }
@@ -473,7 +475,7 @@ const q=medicineSearch.value.toLowerCase();
 
 medicineResults.innerHTML='';
 
-medicines.filter(m=>m.type===currentCategory && m.name.toLowerCase().includes(q)).forEach(m=>{
+medicines.filter(m=>m.type===currentCategory && ((m.name||'').toLowerCase().includes(q) || (m.english||'').toLowerCase().includes(q))).forEach(m=>{
 medicineResults.innerHTML += `
 <div class='item' onclick='pickMedicine("${m.name}")'>
 ${m.name}
@@ -769,7 +771,7 @@ doc.save("Darshana-Ayurveda-Order.pdf");
 
 renderPriceFields();
 renderQtyButtons();
-renderSuppliers();populateMedicineSupplier();
+renderSuppliers();
 renderMedicines();
 renderOrders();
 
