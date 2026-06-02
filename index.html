@@ -54,7 +54,6 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 <div class="nav" onclick="showSection('orders',this)">Orders</div>
 <div class="nav" onclick="showSection('suppliers',this)">Suppliers</div>
 <div class="nav" onclick="showSection('medicines',this)">Medicines</div>
-<div class="nav" onclick="showSection('pricing',this)">Pricing V2</div>
 </div>
 
 <div class="main">
@@ -62,7 +61,7 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 <div id="dashboard" class="section active">
 <div class="panel">
 <h2>Darshana Ayurveda Procurement System</h2>
-<p>Stable Production Build</p>
+<p>V2 Lite Build 1</p>
 </div>
 </div>
 
@@ -97,10 +96,10 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 <div class="tab" onclick="selectType(this,'Guli/Tablets')">Guli/Tablets</div>
 <div class="tab" onclick="selectType(this,'Kalka')">Kalka</div>
 <div class="tab" onclick="selectType(this,'Churna')">Churna</div>
-<div class="tab" onclick="selectType(this,'Oils')">Oils</div>
+<div class="tab" onclick="selectType(this,'Oils')">Oils</div><div class="tab" onclick="selectType(this,'Avasa/Arishta/Peni')">Avasa/Arishta/Peni</div>
 </div>
 
-<input id="medName" placeholder="Medicine Name">
+<input id="medSupplier" placeholder="Supplier Name"><input id="medEnglish" placeholder="English Name"><input id="medName" placeholder="Sinhala Medicine Name">
 <div id="priceFields"></div>
 
 <button onclick="saveMedicine()">Save Medicine</button>
@@ -129,7 +128,7 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 <div class="tab" onclick="switchCategory(this,'Guli/Tablets')">Guli</div>
 <div class="tab" onclick="switchCategory(this,'Kalka')">Kalka</div>
 <div class="tab" onclick="switchCategory(this,'Churna')">Churna</div>
-<div class="tab" onclick="switchCategory(this,'Oils')">Oils</div>
+<div class="tab" onclick="switchCategory(this,'Oils')">Oils</div><div class="tab" onclick="switchCategory(this,'Avasa/Arishta/Peni')">Avasa/Arishta/Peni</div>
 </div>
 
 <input id="medicineSearch" placeholder="Search Medicine..." oninput="searchMedicine()">
@@ -760,34 +759,6 @@ renderMedicines();
 renderOrders();
 
 </script>
-
-
-<div id="pricing" class="section">
-<div class="panel">
-<h2>Pricing V2 (Multi Supplier Architecture)</h2>
-<p>This is the V2 foundation build. Your V1 features remain unchanged.</p>
-
-<h3>Workflow</h3>
-<ul>
-<li>Medicine Library = Sinhala Name + English Name + Category</li>
-<li>Supplier = Name + Contact + Discount</li>
-<li>Pricing stored per supplier</li>
-<li>Guli/Tablets quantities: 60 / 250 / 500 / 1000</li>
-<li>New category: Avasa / Arishta / Peni</li>
-</ul>
-
-<table>
-<tr><th>Category</th><th>Quantities</th></tr>
-<tr><td>Guli/Tablets</td><td>60, 250, 500, 1000</td></tr>
-<tr><td>Churna</td><td>70g, 500g, 1Kg</td></tr>
-<tr><td>Kalka</td><td>10g, 100g, 300g, 500g</td></tr>
-<tr><td>Oils</td><td>30ml,100ml,200ml,500ml,750ml,1L,2L,4.5L</td></tr>
-<tr><td>Avasa/Arishta/Peni</td><td>375ml,750ml</td></tr>
-</table>
-
-<p><b>V1 functionality preserved.</b></p>
-</div>
-</div>
 
 </body>
 </html>
