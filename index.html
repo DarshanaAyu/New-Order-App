@@ -89,7 +89,13 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 <div class="grid">
 
 <div class="panel">
-<h2>Add Medicine</h2>
+
+<h2>Select Supplier</h2>
+<input id="medicineSupplierSearch" placeholder="Search Supplier..." oninput="searchMedicineSupplier()">
+<div id="medicineSupplierResults" class="search-results"></div>
+<div id="selectedMedicineSupplierBox" class="list">No supplier selected</div>
+<h2 style="margin-top:20px">Add Medicine</h2>
+
 
 <div class="tabs">
 <div class="tab active" onclick="selectType(this,'Kashaya')">Kashaya</div>
@@ -266,17 +272,17 @@ el.classList.add('active');
 
 
 function searchMedicineSupplier(){
- const q=document.getElementById('medicineSupplierSearch').value.toLowerCase();
- const res=document.getElementById('medicineSupplierResults');
- res.innerHTML='';
+ const q=(document.getElementById('medicineSupplierSearch')?.value||'').toLowerCase();
+ const r=document.getElementById('medicineSupplierResults');
+ if(!r) return;
+ r.innerHTML='';
  suppliers.filter(s=>s.name.toLowerCase().includes(q)).forEach(s=>{
-   res.innerHTML += `<div class='item' onclick="pickMedicineSupplier('${s.name}')">${s.name}</div>`;
+   r.innerHTML += `<div class='item' onclick="pickMedicineSupplier('${s.name}')">${s.name}</div>`;
  });
 }
 function pickMedicineSupplier(name){
  const s=suppliers.find(x=>x.name===name);
- document.getElementById('medicineSupplier').value=name;
- document.getElementById('selectedMedicineSupplierBox').innerHTML=`<b>✓ ${name}</b><br>Discount: ${s?.discount||0}%`;
+ document.getElementById('selectedMedicineSupplierBox').innerHTML=`<b>✓ ${name}</b><br>Discount ${s?.discount||0}%`;
  document.getElementById('medicineSupplierSearch').value='';
  document.getElementById('medicineSupplierResults').innerHTML='';
 }
@@ -475,7 +481,7 @@ const q=medicineSearch.value.toLowerCase();
 
 medicineResults.innerHTML='';
 
-medicines.filter(m=>m.type===currentCategory && ((m.name||'').toLowerCase().includes(q) || (m.english||'').toLowerCase().includes(q))).forEach(m=>{
+medicines.filter(m=>m.type===currentCategory && m.name.toLowerCase().includes(q)).forEach(m=>{
 medicineResults.innerHTML += `
 <div class='item' onclick='pickMedicine("${m.name}")'>
 ${m.name}
