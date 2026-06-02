@@ -61,7 +61,7 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 <div id="dashboard" class="section active">
 <div class="panel">
 <h2>Darshana Ayurveda Procurement System</h2>
-<p>V2 Lite Build 1</p>
+<p>Stable Production Build</p>
 </div>
 </div>
 
@@ -90,16 +90,20 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 
 <div class="panel">
 <h2>Add Medicine</h2>
+<select id="medicineSupplier">
+<option value="">Select Supplier</option>
+</select>
 
 <div class="tabs">
 <div class="tab active" onclick="selectType(this,'Kashaya')">Kashaya</div>
 <div class="tab" onclick="selectType(this,'Guli/Tablets')">Guli/Tablets</div>
 <div class="tab" onclick="selectType(this,'Kalka')">Kalka</div>
 <div class="tab" onclick="selectType(this,'Churna')">Churna</div>
-<div class="tab" onclick="selectType(this,'Oils')">Oils</div><div class="tab" onclick="selectType(this,'Avasa/Arishta/Peni')">Avasa/Arishta/Peni</div>
+<div class="tab" onclick="selectType(this,'Oils')">Oils</div>
+<div class="tab" onclick="selectType(this,'Avasa/Arishta/Peni')">Avasa/Arishta/Peni</div>
 </div>
 
-<input id="medSupplier" placeholder="Supplier Name"><input id="medEnglish" placeholder="English Name"><input id="medName" placeholder="Sinhala Medicine Name">
+<input id="medEnglish" placeholder="English Name"><input id="medName" placeholder="Medicine Name">
 <div id="priceFields"></div>
 
 <button onclick="saveMedicine()">Save Medicine</button>
@@ -128,7 +132,8 @@ th,td{border:1px solid #eef2ff;padding:10px;text-align:left}
 <div class="tab" onclick="switchCategory(this,'Guli/Tablets')">Guli</div>
 <div class="tab" onclick="switchCategory(this,'Kalka')">Kalka</div>
 <div class="tab" onclick="switchCategory(this,'Churna')">Churna</div>
-<div class="tab" onclick="switchCategory(this,'Oils')">Oils</div><div class="tab" onclick="switchCategory(this,'Avasa/Arishta/Peni')">Avasa/Arishta/Peni</div>
+<div class="tab" onclick="switchCategory(this,'Oils')">Oils</div>
+<div class="tab" onclick="switchCategory(this,'Avasa/Arishta/Peni')">Avasa/Arishta/Peni</div>
 </div>
 
 <input id="medicineSearch" placeholder="Search Medicine..." oninput="searchMedicine()">
@@ -209,12 +214,22 @@ discount:Number(supDiscount.value||0)
 });
 
 persist();
-renderSuppliers();
+renderSuppliers();populateMedicineSupplier();
 
 supName.value='';
 supRep.value='';
 supPhone.value='';
 supDiscount.value='';
+}
+
+
+function populateMedicineSupplier(){
+const dd=document.getElementById('medicineSupplier');
+if(!dd) return;
+dd.innerHTML='<option value="">Select Supplier</option>';
+suppliers.forEach(s=>{
+dd.innerHTML += `<option value="${s.name}">${s.name}</option>`;
+});
 }
 
 function renderSuppliers(){
@@ -247,14 +262,14 @@ supDiscount.value=s.discount;
 suppliers.splice(index,1);
 
 persist();
-renderSuppliers();
+renderSuppliers();populateMedicineSupplier();
 }
 
 function deleteSupplier(index){
 if(confirm('Delete Supplier?')){
 suppliers.splice(index,1);
 persist();
-renderSuppliers();
+renderSuppliers();populateMedicineSupplier();
 }
 }
 
@@ -754,7 +769,7 @@ doc.save("Darshana-Ayurveda-Order.pdf");
 
 renderPriceFields();
 renderQtyButtons();
-renderSuppliers();
+renderSuppliers();populateMedicineSupplier();
 renderMedicines();
 renderOrders();
 
